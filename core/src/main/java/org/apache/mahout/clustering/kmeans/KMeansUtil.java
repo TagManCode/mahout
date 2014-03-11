@@ -17,8 +17,6 @@
 
 package org.apache.mahout.clustering.kmeans;
 
-import java.util.Collection;
-
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.fs.Path;
 import org.apache.hadoop.io.Writable;
@@ -31,44 +29,43 @@ import org.apache.mahout.common.iterator.sequencefile.SequenceFileDirValueIterab
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-final class KMeansUtil {
-  
-  private static final Logger log = LoggerFactory.getLogger(KMeansUtil.class);
+import java.util.Collection;
 
-  private KMeansUtil() {}
-  
-  /**
-   * Create a list of Klusters from whatever Cluster type is passed in as the prior
-   * 
-   * @param conf
-   *          the Configuration
-   * @param clusterPath
-   *          the path to the prior Clusters
-   * @param clusters
-   *          a List<Cluster> to put values into
-   */
-  public static void configureWithClusterInfo(Configuration conf, Path clusterPath, Collection<Cluster> clusters) {
-    for (Writable value : new SequenceFileDirValueIterable<Writable>(clusterPath, PathType.LIST,
-        PathFilters.partFilter(), conf)) {
-      Class<? extends Writable> valueClass = value.getClass();
-      if (valueClass.equals(ClusterWritable.class)) {
-        ClusterWritable clusterWritable = (ClusterWritable) value;
-        value = clusterWritable.getValue();
-        valueClass = value.getClass();
-      }
-      log.debug("Read 1 Cluster from {}", clusterPath);
-      
-      if (valueClass.equals(Kluster.class)) {
-        // get the cluster info
-        clusters.add((Kluster) value);
-      } else if (valueClass.equals(Canopy.class)) {
-        // get the cluster info
-        Canopy canopy = (Canopy) value;
-        clusters.add(new Kluster(canopy.getCenter(), canopy.getId(), canopy.getMeasure()));
-      } else {
-        throw new IllegalStateException("Bad value class: " + valueClass);
-      }
+final class KMeansUtil {
+
+    private static final Logger log = LoggerFactory.getLogger(KMeansUtil.class);
+
+    private KMeansUtil() {
     }
-  }
-  
+
+    /**
+     * Create a list of Klusters from whatever Cluster type is passed in as the prior
+     *
+     * @param conf        the Configuration
+     * @param clusterPath the path to the prior Clusters
+     * @param clusters    a List<Cluster> to put values into
+     */
+    public static void configureWithClusterInfo(Configuration conf, Path clusterPath, Collection<Cluster> clusters) {
+        for (Writable value : new SequenceFileDirValueIterable<Writable>(clusterPath, PathType.LIST, PathFilters.partFilter(), conf)) {
+            Class<? extends Writable> valueClass = value.getClass();
+            if (valueClass.equals(ClusterWritable.class)) {
+                ClusterWritable clusterWritable = (ClusterWritable) value;
+                value = clusterWritable.getValue();
+                valueClass = value.getClass();
+            }
+            log.debug("Read 1 Cluster from {}", clusterPath);
+
+            if (valueClass.equals(Kluster.class)) {
+                // get the cluster info
+                clusters.add((Kluster) value);
+            } else if (valueClass.equals(Canopy.class)) {
+                // get the cluster info
+                Canopy canopy = (Canopy) value;
+                clusters.add(new Kluster(canopy.getCenter(), canopy.getId(), canopy.getMeasure()));
+            } else {
+                throw new IllegalStateException("Bad value class: " + valueClass);
+            }
+        }
+    }
+
 }
