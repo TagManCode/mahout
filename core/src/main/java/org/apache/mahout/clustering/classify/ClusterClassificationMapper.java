@@ -73,7 +73,7 @@ public class ClusterClassificationMapper extends
       Path clustersInPath = new Path(clustersIn);
       clusterModels = populateClusterModels(clustersInPath, conf);
       ClusteringPolicy policy = ClusterClassifier
-          .readPolicy(finalClustersPath(clustersInPath));
+          .readPolicy(context.getConfiguration(), finalClustersPath(clustersInPath));
       clusterClassifier = new ClusterClassifier(clusterModels, policy);
     }
     clusterId = new IntWritable();
