@@ -136,27 +136,8 @@ public class FuzzyKMeansDriver extends AbstractJob {
      * @param runSequential    if true run in sequential execution mode
      */
     public static void run(Configuration conf, Path input, Path clustersIn, Path output, double convergenceDelta, int maxIterations, float m, boolean runClustering, boolean emitMostLikely, double threshold, boolean runSequential) throws IOException, ClassNotFoundException, InterruptedException {
-
         log.info("Building clusters");
         Path clustersOut = buildClusters(conf, input, clustersIn, output, convergenceDelta, maxIterations, m, runSequential);
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
         if (runClustering) {
             log.info("Clustering");
             clusterData(conf, input, clustersOut, output, convergenceDelta, m, emitMostLikely, threshold, runSequential);
@@ -185,11 +166,9 @@ public class FuzzyKMeansDriver extends AbstractJob {
             throw new IllegalStateException("No input clusters found in " + clustersIn + ". Check your -c argument.");
         }
 
-        log.info("Get {} input clusters", clusters.size());
         Path priorClustersPath = new Path(output, Cluster.INITIAL_CLUSTERS_DIR);
         ClusteringPolicy policy = new FuzzyKMeansClusteringPolicy(m, convergenceDelta);
         ClusterClassifier prior = new ClusterClassifier(clusters, policy);
-        log.info("Writing initial clusters to {}", priorClustersPath);
         prior.writeToSeqFiles(conf, priorClustersPath);
 
         if (runSequential) {
