@@ -168,7 +168,7 @@ public final class TestCanopyCreation extends MahoutTestCase {
 
   /**
    * Story: User can produce initial canopy centers using a
-   * ManhattanDistanceMeasure and a CanopyMapper which clusters input points to
+   * ManhattanDistanceMeasure and a SequenceCanopyMapper which clusters input points to
    * produce an output set of canopy centroid points.
    */
   @Test
@@ -204,7 +204,7 @@ public final class TestCanopyCreation extends MahoutTestCase {
 
   /**
    * Story: User can produce initial canopy centers using a
-   * EuclideanDistanceMeasure and a CanopyMapper/Combiner which clusters input
+   * EuclideanDistanceMeasure and a SequenceCanopyMapper/Combiner which clusters input
    * points to produce an output set of canopy centroid points.
    */
   @Test

@@ -81,7 +81,7 @@ public final class TestClusterClassifier extends MahoutTestCase {
   
   private ClusterClassifier writeAndRead(ClusterClassifier classifier) throws IOException {
     Path path = new Path(getTestTempDirPath(), "output");
-    classifier.writeToSeqFiles(path);
+    classifier.writeToSeqFiles(getConfiguration(), path);
     ClusterClassifier newClassifier = new ClusterClassifier();
     newClassifier.readFromSeqFiles(getConfiguration(), path);
     return newClassifier;
@@ -188,7 +188,7 @@ public final class TestClusterClassifier extends MahoutTestCase {
     ClusteringTestUtils.writePointsToFile(points, new Path(pointsPath, "file1"), fs, conf);
     Path path = new Path(priorPath, "priorClassifier");
     ClusterClassifier prior = newKlusterClassifier();
-    prior.writeToSeqFiles(path);
+    prior.writeToSeqFiles(conf, path);
     assertEquals(3, prior.getModels().size());
     System.out.println("Prior");
     for (Cluster cluster : prior.getModels()) {
@@ -220,9 +220,9 @@ public final class TestClusterClassifier extends MahoutTestCase {
     ClusteringTestUtils.writePointsToFile(points, new Path(pointsPath, "file1"), fs, conf);
     Path path = new Path(priorPath, "priorClassifier");
     ClusterClassifier prior = newKlusterClassifier();
-    prior.writeToSeqFiles(path);
+    prior.writeToSeqFiles(conf, path);
     ClusteringPolicy policy = new KMeansClusteringPolicy();
-    ClusterClassifier.writePolicy(policy, path);
+    ClusterClassifier.writePolicy(conf, policy, path);
     assertEquals(3, prior.getModels().size());
     System.out.println("Prior");
     for (Cluster cluster : prior.getModels()) {

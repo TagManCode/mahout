@@ -82,7 +82,7 @@ public class DisplayKMeans extends DisplayClustering {
     }
     ClusterClassifier prior = new ClusterClassifier(initialClusters, new KMeansClusteringPolicy(convergenceDelta));
     Path priorPath = new Path(output, Cluster.INITIAL_CLUSTERS_DIR);
-    prior.writeToSeqFiles(priorPath);
+    prior.writeToSeqFiles(conf, priorPath);
     
     ClusterIterator.iterateSeq(conf, samples, priorPath, output, maxIterations);
     loadClustersWritable(output);

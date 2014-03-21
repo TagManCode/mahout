@@ -91,7 +91,7 @@ public class DisplayFuzzyKMeans extends DisplayClustering {
     }
     ClusterClassifier prior = new ClusterClassifier(initialClusters, new FuzzyKMeansClusteringPolicy(m, threshold));
     Path priorPath = new Path(output, "classifier-0");
-    prior.writeToSeqFiles(priorPath);
+    prior.writeToSeqFiles(conf, priorPath);
     
     ClusterIterator.iterateSeq(conf, samples, priorPath, output, maxIterations);
     loadClustersWritable(output);
